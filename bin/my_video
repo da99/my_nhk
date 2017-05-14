@@ -1,0 +1,57 @@
+#!/usr/bin/env mksh
+#
+#
+ACTION="[none]"
+if [[ ! -z "$@" ]]; then
+  ACTION="$1"; shift
+fi
+
+set -u -e -o pipefail
+THE_ARGS="$@"
+THIS_DIR="$(dirname "$(dirname "$(realpath "$0")")")"
+PATH="$PATH:$THIS_DIR/../mksh_setup/bin"
+PATH="$PATH:$THIS_DIR/../sh_color/bin"
+PATH="$PATH:$THIS_DIR/bin"
+
+case $ACTION in
+
+  help|--help|-h)
+    PATH="$PATH:$THIS_DIR/../mksh_setup/bin"
+    mksh_setup print-help $0 "$@"
+    ;;
+
+  *)
+
+    FUNC_FILE="$THIS_DIR/bin/public/${ACTION}/_.sh"
+
+    if [[ -s  "$FUNC_FILE"  ]]; then
+
+      export THIS_FILE="$FUNC_FILE"
+      export THIS_FUNC="$ACTION"
+      export THIS_FUNC_DIR="$THIS_DIR/bin/public/${ACTION}"
+
+      source "$THIS_FILE"
+      "$THIS_FUNC" "$@"
+      exit 0
+    fi
+
+    BIN_FILE="$THIS_DIR/bin/lib/${ACTION}.sh"
+    if [[ -s "$BIN_FILE" ]]; then
+      source "$BIN_FILE"
+      "$ACTION" "$@"
+      exit 0
+    fi
+
+    # === Check progs/bin:
+    if [[ -f "$THIS_DIR/progs/bin/$ACTION" ]]; then
+      export PATH="$THIS_DIR/progs/bin:$PATH"
+      "$THIS_DIR"/progs/bin/$ACTION "$@"
+      exit 0
+    fi
+
+    # === It's an error:
+    echo "!!! Unknown action: $ACTION" 1>&2
+    exit 1
+    ;;
+
+esac
