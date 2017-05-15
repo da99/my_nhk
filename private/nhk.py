@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 
 import os, sys, re, json, urllib2, gzip, StringIO;
+import time
 from pprint import pprint;
+
+def epoch_time():
+    return int(time.time())
 
 def get_by_id(the_list, the_id):
     for i, val in enumerate(the_list):
@@ -26,13 +30,19 @@ def get_list(f):
     the_list = get_json(f)
     return the_list["channel"]["item"]
 
+def get_starts_at_mins(meta):
+    return ((get_pub_epoch(meta) - epoch_time())/60)
+
 def get_json(f):
     f = open(f, "r")
     txt = f.read()
     return json.loads(txt)
 
 def get_full(meta):
-    return '{{' + get_title(meta) + "}} " + get_duration(meta) + "\n" + get_desc(meta)
+    return '{{' + get_title(meta) + "}} \n" + get_duration(meta)  + ", ID: " + get_id(meta) + "\n" + get_desc(meta)
+
+def get_pub_epoch(meta):
+    return int(meta["pubDate"])/1000
 
 def get_dur_secs(meta):
     begins = int(meta["pubDate"])/1000
@@ -45,13 +55,16 @@ def get_dur(meta):
     return duration
 
 def get_duration(meta):
-    return "(" + str(get_dur(meta)) + " mins)"
+    return str(get_dur(meta)) + " mins., starts in {{" + str(get_starts_at_mins(meta)) + "}} mins."
 
 def get_desc(meta):
     return meta["description"].strip()
 
+def get_plain_title(meta):
+    return meta["title"].strip()
+
 def get_title(meta):
-    title = meta["title"].strip()
+    title = get_plain_title(meta)
     subtitle = (meta["subtitle"] or "").strip()
     if meta["subtitle"] == "":
         return title
@@ -75,7 +88,7 @@ else:
     if the_action == "titles":
       the_list = get_nhk()
       for i, val in enumerate(the_list):
-          print get_id(val) + ": " + get_title(val)
+          print get_id(val) + ": " + get_title(val) + " ("  + get_duration(val) + ")"
 
     elif the_action == "all":
         the_list = get_nhk()
@@ -101,6 +114,11 @@ else:
         keys = the_list[0].keys()
         keys.sort()
         print ", ".join(keys)
+
+    elif the_action == "title":
+        the_list = get_nhk()
+        the_id = sys.argv[3].strip()
+        print get_by_id(the_list, the_id)["title"]
 
     elif the_action == "desc":
         the_list = get_nhk()

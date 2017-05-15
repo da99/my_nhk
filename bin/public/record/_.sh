@@ -9,6 +9,11 @@ record () {
   fi
 
   local +x NUM="$1"; shift
+  if my_nhk is-skip "$NUM" ; then
+    echo "=== Skipping: $(my_nhk title $NUM 2>/dev/null || :) (ID: $NUM)" >&2
+    exit 0
+  fi
+
   local +x INFO="$(my_nhk record-info $NUM || :)"
   if [[ -z "$INFO" ]]; then
     exit 2
@@ -18,18 +23,26 @@ record () {
   local +x STARTS="$1"
   local +x SECS="$2"
   local +x FILE="/tmp/nhk.$3.raw"
+  local +x FILE_TMP="${FILE}.tmp"
   local +x A_ID="$4"
   local +x NOW="$(date +"%s")"
   local +x WAIT_TIME="$(($STARTS - $NOW))"
   local +x MINS="$(( WAIT_TIME / 60))"
 
+  if [[ -e "$FILE" ]]; then
+    echo "=== Already exists: $FILE" >&2
+    exit 4
+  fi
+
   sleep "$WAIT_TIME"
 
-  curl $IS_SILENT -o "$FILE" http://bdrm:2110 --max-time "$SECS" || {
+  rm -f "$FILE_TMP"
+  curl $IS_SILENT -o "$FILE_TMP" http://bdrm:2110 --max-time "$SECS" || {
     local +x STAT="$?"
     if [[ "$STAT" -eq "28" ]]; then
       exit 0
     fi
     exit "$STAT"
   }
+  mv -f "$FILE_TMP" "$FILE"
 } # === end function

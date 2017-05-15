@@ -5,7 +5,6 @@
 set -u -e -o pipefail
 PATH="$PATH:/apps/my_nhk/bin"
 while : ; do
-  my_nhk record-next "COOL JAPAN" || :
-  my_nhk record-next "DIVE" || :
-  sleep "$(( 60 * 60 * 24 ))"
+  my_nhk record-next "COOL JAPAN|UKIYO-E|Doki|Document|Buzz|Focus|Melo|Newsroom|Close-up|Inside"
+  sleep "$(( 60 * 25 ))" # === run every 30 minutes
 done
