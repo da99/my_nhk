@@ -5,7 +5,7 @@ watch () {
     nhk.py)
       cd "$THIS_DIR"
       mkdir -p tmp
-      my_video nhk --file > tmp/nhk.json
+      my_video nhk --json > tmp/nhk.json
       cat tmp/nhk.json
 
       set "-x"
