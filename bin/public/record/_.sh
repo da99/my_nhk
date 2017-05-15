@@ -25,5 +25,11 @@ record () {
 
   sleep "$WAIT_TIME"
 
-  curl $IS_SILENT -o "$FILE" http://bdrm:2110 --max-time "$SECS"
+  curl $IS_SILENT -o "$FILE" http://bdrm:2110 --max-time "$SECS" || {
+    local +x STAT="$?"
+    if [[ "$STAT" -eq "28" ]]; then
+      exit 0
+    fi
+    exit "$STAT"
+  }
 } # === end function

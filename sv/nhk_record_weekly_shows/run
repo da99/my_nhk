@@ -1,0 +1,11 @@
+#!/usr/bin/mksh
+#
+#
+
+set -u -e -o pipefail
+PATH="$PATH:/apps/my_nhk/bin"
+while : ; do
+  my_nhk record-next "COOL JAPAN" || :
+  my_nhk record-next "DIVE" || :
+  sleep "$(( 60 * 60 * 24 ))"
+done

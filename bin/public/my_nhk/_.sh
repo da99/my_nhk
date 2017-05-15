@@ -40,8 +40,7 @@ my_nhk () {
       unset -f my_nhk
       shift
       local +x TARGET="$@"
-      set +o pipefail
-      my_nhk titles | tail -n+2 | grep -i "$TARGET" | head -n1 | cut -d':' -f1
+      my_nhk titles | tail -n+2 | grep -i "$TARGET" | head -n1 | cut -d':' -f1 | cat
       ;;
 
     "next "*)

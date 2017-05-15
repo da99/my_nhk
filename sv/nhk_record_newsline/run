@@ -2,8 +2,9 @@
 #
 #
 
+set -u -e -o pipefail
 PATH="$PATH:/apps/my_nhk/bin"
 while : ; do
-  my_nhk record --silent "$(my_nhk next-id NEWSLINE)"
+  my_nhk record-next "NEWSLINE" || :
   sleep "$(( 60 * 60 * 12 ))"
 done
