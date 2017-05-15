@@ -22,10 +22,6 @@ def get_nhk():
     the_dir = sys.argv[1].strip()
     return get_list(the_dir + "/nhk.json")
 
-def get_prev():
-    the_dir = sys.argv[1].strip()
-    return get_list(the_dir + "/prev.json")
-
 def get_list(f):
     the_list = get_json(f)
     return the_list["channel"]["item"]
@@ -120,7 +116,7 @@ else:
         print get_full(the_list[1])
 
     elif the_action == "record-info":
-        the_list = get_prev()
+        the_list = get_nhk()
         the_id = sys.argv[3].strip()
         val = get_by_id(the_list, the_id)
         begins = int(val["pubDate"])/1000

@@ -1,0 +1,9 @@
+#!/usr/bin/mksh
+#
+#
+
+PATH="$PATH:/apps/my_nhk/bin"
+while : ; do
+  my_nhk record --silent "$(my_nhk next-id NEWSLINE)"
+  sleep "$(( 60 * 60 * 12 ))"
+done
