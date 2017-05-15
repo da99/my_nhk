@@ -22,6 +22,7 @@ record () {
   set $INFO
   local +x STARTS="$1"
   local +x SECS="$2"
+  local +x SHOW_TITLE="$3"
   local +x FILE="/tmp/nhk.$3.raw"
   local +x FILE_TMP="${FILE}.tmp"
   local +x A_ID="$4"
@@ -34,6 +35,7 @@ record () {
     exit 4
   fi
 
+  echo "=== Waiting to record: $SHOW_TITLE" >&2
   sleep "$WAIT_TIME"
 
   rm -f "$FILE_TMP"
@@ -45,4 +47,5 @@ record () {
     exit "$STAT"
   }
   mv -f "$FILE_TMP" "$FILE"
+  my_nhk skip "$A_ID"
 } # === end function
