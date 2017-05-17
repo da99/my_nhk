@@ -35,17 +35,33 @@ record () {
     exit 4
   fi
 
-  echo "=== Waiting to record: $SHOW_TITLE" >&2
+  if [[ "$WAIT_TIME" -lt 1 ]]; then
+    echo "!!! Show is not in the future: $SHOW_TITLE" >&2
+    exit 2
+  fi
+  echo "=== $(date +"%I:%M:%S %p"): Waiting to record: $SHOW_TITLE" >&2
   sleep "$WAIT_TIME"
 
-  rm -f "$FILE_TMP"
+  if my_nhk is-skip "$NUM" ; then
+    echo "=== Skipping: $(my_nhk title $NUM 2>/dev/null || :) (ID: $NUM)" >&2
+    exit 0
+  fi
+
+  if [[ -f "$FILE_TMP" ]]; then
+    echo "=== Removing: $FILE_TMP" >&2
+    rm "$FILE_TMP"
+  fi
+
+  set "-x"
   curl $IS_SILENT -o "$FILE_TMP" http://bdrm:2110 --max-time "$SECS" || {
     local +x STAT="$?"
-    if [[ "$STAT" -eq "28" ]]; then
-      exit 0
+    if [[ ! "$STAT" -eq "28" ]]; then
+      echo "=== Unknown error from curl: $STAT" >&2
+      exit "$STAT"
     fi
-    exit "$STAT"
   }
-  mv -f "$FILE_TMP" "$FILE"
   my_nhk skip "$A_ID"
+  # echo "=== SKIPPING: $A_ID $SHOW_TITLE" >&2
+  mv -f "$FILE_TMP" "$FILE"
+  # echo "=== DONE: $FILE" >&2
 } # === end function
