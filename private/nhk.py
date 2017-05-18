@@ -88,7 +88,13 @@ def get_title(meta):
 
 def download_schedule():
     resp = urllib2.urlopen("http://api.nhk.or.jp/nhkworld/epg/v6/world/now.json?apikey=EJfK8jdS57GqlupFgAfAAwr573q01y6k");
+
     raw  = resp.read().strip()
+      # Sometimes newlines are randomly included in the raw JSON output.
+      # Even if you pipe this to tr, it will still output newlines for some reason.
+      # So we save the entire output first (RAW), then delete newlines with tr.
+      # Newlines in JSON will throw an error in Python.
+
     try:
         gzipped = StringIO.StringIO(raw)
         decoded = gzip.GzipFile(fileobj=gzipped).read()
@@ -118,9 +124,16 @@ elif the_action == "seconds-left":
 elif the_action == "schedule-download":
     download_schedule()
 
+
 elif the_action == "title":
   the_list = get_nhk()
-  print get_plain_title(the_list[0])
+  the_id = sys.argv[2].strip()
+  if the_id == "title" or re.search(".json", the_id):
+      print get_plain_title(the_list[0])
+  elif the_id == "next":
+      print get_plain_title(the_list[1])
+  else:
+      print get_by_id(the_list, the_id)["title"]
 
 elif the_action == "titles":
   the_list = get_nhk()
@@ -151,11 +164,6 @@ elif the_action == "keys":
     keys = the_list[0].keys()
     keys.sort()
     print ", ".join(keys)
-
-elif the_action == "title":
-    the_list = get_nhk()
-    the_id = sys.argv[2].strip()
-    print get_by_id(the_list, the_id)["title"]
 
 elif the_action == "desc":
     the_list = get_nhk()

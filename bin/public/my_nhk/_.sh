@@ -15,7 +15,6 @@ my_nhk () {
       local +x NEW_FILE="tmp/schedules/$(date +"%Y-%m-%d-%H-%M-%S").json"
       { "$THIS_DIR"/private/nhk.py "schedule-download" > "$NEW_FILE" && echo "$NEW_FILE" && return 0 ; } || {
         rm -f "$NEW_FILE"
-        exit 5
       }
       ;;
 
@@ -38,7 +37,7 @@ my_nhk () {
     "schedule-refresh")
       unset -f my_nhk
       if ! my_nhk schedule-is-fresh ; then
-        my_nhk schedule-download > tmp/schedules/"$(date +"%Y-%m-%d-%H-%M-%S")".json
+        my_nhk schedule-download
       fi
       ;;
 
