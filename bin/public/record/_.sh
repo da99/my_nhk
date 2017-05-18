@@ -23,7 +23,7 @@ record () {
   local +x STARTS="$1"
   local +x SECS="$2"
   local +x SHOW_TITLE="$3"
-  local +x FILE="/tmp/nhk.$3.raw"
+  local +x FILE="/tmp/nhk.$3.mp4"
   local +x FILE_TMP="${FILE}.tmp"
   local +x A_ID="$4"
   local +x NOW="$(date +"%s")"
@@ -60,8 +60,7 @@ record () {
       exit "$STAT"
     fi
   }
-  my_nhk skip "$A_ID"
-  # echo "=== SKIPPING: $A_ID $SHOW_TITLE" >&2
+
   mv -f "$FILE_TMP" "$FILE"
-  # echo "=== DONE: $FILE" >&2
+  my_nhk skip "$A_ID"
 } # === end function
