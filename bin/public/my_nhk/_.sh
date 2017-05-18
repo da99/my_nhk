@@ -7,45 +7,39 @@
 # === {{BIN}}  current
 # === {{BIN}}  next    [Search String]
 # === {{BIN}}  next-id Search String
+
+schedule-from-cache () {
+  ls -1 tmp/schedules | sort -r | head -n1 | {
+    read -r LINE
+    realpath "$THIS_DIR/tmp/schedules/$LINE"
+  }
+}
+
+schedule-is-fresh () {
+  "$THIS_DIR"/private/nhk.py "schedule-is-fresh" "$SCHEDULE"
+}
+
+schedule-download () {
+  local +x NEW_FILE="tmp/schedules/$(date +"%Y-%m-%d-%H-%M-%S").json"
+  { "$THIS_DIR"/private/nhk.py "schedule-download" > "$NEW_FILE"  ; } || {
+    rm -f "$NEW_FILE"
+  }
+}
+
 my_nhk () {
   cd "$THIS_DIR"
+
+  local +x SCHEDULE="$(schedule-from-cache)"
+
   case "$@" in
 
-    "schedule-download")
-      local +x NEW_FILE="tmp/schedules/$(date +"%Y-%m-%d-%H-%M-%S").json"
-      { "$THIS_DIR"/private/nhk.py "schedule-download" > "$NEW_FILE" && echo "$NEW_FILE" && return 0 ; } || {
-        rm -f "$NEW_FILE"
-      }
-      ;;
-
-    "schedule-from-cache")
-      ls -1 tmp/schedules | sort -r | head -n1 | {
-        read -r FILE
-        echo "$(realpath "tmp/schedules/$FILE")"
-      }
-      ;;
-
-    "schedule-is-fresh")
-      local +x FILE="$(my_nhk schedule-from-cache)"
-      if [[ -f "$FILE" ]]; then
-        "$THIS_DIR"/private/nhk.py "schedule-is-fresh" "$FILE"
-      else
-        return 1
-      fi
-      ;;
-
-    "schedule-refresh")
-      unset -f my_nhk
-      if ! my_nhk schedule-is-fresh ; then
-        my_nhk schedule-download
-      fi
-      ;;
-
     "schedule")
-      unset -f my_nhk
-
-      my_nhk schedule-refresh
-      local +x FILE="$(my_nhk schedule-from-cache)"
+      if schedule-is-fresh ; then
+        local +x FILE="$SCHEDULE"
+      else
+        schedule-download
+        local +x FILE="$(schedule-from-cache)"
+      fi
 
       if [[ -z "$FILE" ]]; then
         echo "!!! Could not retrieve schedule after repeated attempts" >&2
