@@ -1,5 +1,5 @@
 
-# === {{BIN}}  --json
+# === {{BIN}}  schedule
 # === {{BIN}}  titles          # Prints: NUM TITLE : SUBTITLE
 # === {{BIN}}  choose  desc|record-info|record
 # === {{BIN}}  desc        ID
@@ -10,8 +10,50 @@
 my_nhk () {
   cd "$THIS_DIR"
   case "$@" in
-    "--json")
-      "$THIS_DIR"/private/nhk.py "$@"
+
+    "schedule-download")
+      local +x NEW_FILE="tmp/schedules/$(date +"%Y-%m-%d-%H-%M-%S").json"
+      { "$THIS_DIR"/private/nhk.py "schedule-download" > "$NEW_FILE" && echo "$NEW_FILE" && return 0 ; } || {
+        rm -f "$NEW_FILE"
+        exit 5
+      }
+      ;;
+
+    "schedule-from-cache")
+      ls -1 tmp/schedules | sort -r | head -n1 | {
+        read -r FILE
+        echo "$(realpath "tmp/schedules/$FILE")"
+      }
+      ;;
+
+    "schedule-is-fresh")
+      local +x FILE="$(my_nhk schedule-from-cache)"
+      if [[ -f "$FILE" ]]; then
+        "$THIS_DIR"/private/nhk.py "schedule-is-fresh" "$FILE"
+      else
+        return 1
+      fi
+      ;;
+
+    "schedule-refresh")
+      unset -f my_nhk
+      if ! my_nhk schedule-is-fresh ; then
+        my_nhk schedule-download > tmp/schedules/"$(date +"%Y-%m-%d-%H-%M-%S")".json
+      fi
+      ;;
+
+    "schedule")
+      unset -f my_nhk
+
+      my_nhk schedule-refresh
+      local +x FILE="$(my_nhk schedule-from-cache)"
+
+      if [[ -z "$FILE" ]]; then
+        echo "!!! Could not retrieve schedule after repeated attempts" >&2
+        exit 5
+      fi
+
+      echo "$FILE"
       ;;
 
     choose|choose" "*)
@@ -58,12 +100,8 @@ my_nhk () {
 
     *)
       mkdir -p tmp
-      my_nhk --json > tmp/nhk.json
-      "$THIS_DIR"/private/nhk.py tmp/ "$@" | {
-        while read -r LINE ; do
-          sh_color BOLD "$LINE"
-        done
-      }
+      my_nhk schedule > tmp/nhk.json
+      "$THIS_DIR"/private/nhk.py "$@" "$(my_nhk schedule)" | sh_color BOLD
       ;;
   esac
 } # === end function
