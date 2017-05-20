@@ -20,10 +20,15 @@ schedule-is-fresh () {
 }
 
 schedule-download () {
-  local +x NEW_FILE="tmp/schedules/$(date +"%Y-%m-%d-%H-%M-%S").json"
-  { "$THIS_DIR"/private/nhk.py "schedule-download" > "$NEW_FILE"  ; } || {
-    rm -f "$NEW_FILE"
+  local +x NOW="$(date +"%Y-%m-%d-%H-%M-%S")"
+  local +x NEW_FILE="tmp/schedules/${NOW}.json"
+  local +x TMP_FILE="tmp/schedule.${NOW}.json.tmp"
+  "$THIS_DIR"/private/nhk.py "schedule-download" > "$TMP_FILE" || {
+    rm -f "$TMP_FILE"
   }
+  if [[ -f "$TMP_FILE" ]]; then
+    mv "$TMP_FILE" "$NEW_FILE"
+  fi
 }
 
 my_nhk () {
