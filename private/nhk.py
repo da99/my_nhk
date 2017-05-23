@@ -178,6 +178,12 @@ elif the_action == "next":
     the_list = get_nhk()
     print get_full(the_list[1])
 
+elif the_action == "nexts":
+    the_list = get_nhk()
+    for i, show in enumerate(the_list):
+        if is_in_future(show):
+            print get_id(show) + " " + get_plain_title(show)
+
 elif the_action == "record-info":
     the_list = get_nhk()
     the_id = sys.argv[2].strip()

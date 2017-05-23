@@ -80,7 +80,7 @@ my_nhk () {
       unset -f my_nhk
       shift
       local +x TARGET="$@"
-      local +x FOUND="$(my_nhk titles | tail -n+2 | grep -i -P "$TARGET" | head -n1 | cut -d':' -f1 || :)"
+      local +x FOUND="$(my_nhk nexts | grep -i -P "$TARGET" | head -n1 | cut -d':' -f1 || :)"
       if [[ -z "$FOUND" ]]; then
         exit 1
       fi
