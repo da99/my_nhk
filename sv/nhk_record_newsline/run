@@ -8,7 +8,7 @@ mkdir -p /tmp/nhk
 NHK_LOG=/tmp/nhk/record-newsline
 
 case "$(date +"%I:%M")" in
-  "05:59"|"11:59")
+  "05:59")
     echo -n "--- Beginning to record @ "
     date +"%H:%M:%S"
     my_nhk record-next "NEWSLINE" || echo "error $?"
