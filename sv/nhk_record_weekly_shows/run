@@ -4,4 +4,4 @@
 
 set -u -e -o pipefail
 PATH="$PATH:/apps/my_nhk/bin"
-my_nhk record-next "HOKUSAI|SOMEWHERE|COOL JAPAN|UKIYO-E|Doki|Document|Buzz|Focus|Melo|Newsroom|Close-up|Inside"
+my_nhk record-next "Insight|HOKUSAI|SOMEWHERE|COOL JAPAN|UKIYO-E|Doki|Document|Buzz|Focus|Melo|Newsroom|Close-up|Inside"
