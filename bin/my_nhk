@@ -25,31 +25,22 @@ case $ACTION in
     mkdir -p "$THIS_DIR/tmp/schedules"
     mkdir -p "$THIS_DIR/tmp/skips"
 
-    FUNC_FILE="$THIS_DIR/bin/public/${ACTION}/_.sh"
-
-    if [[ ! -s  "$FUNC_FILE"  ]]; then
-      FUNC_FILE="$THIS_DIR/bin/public/my_nhk/_.sh"
-      source "$FUNC_FILE"
-      my_nhk "$ACTION" "$@"
-      exit 0
-    fi
-
+    local +x FUNC_FILE="$THIS_DIR/bin/public/${ACTION}/_.sh"
     if [[ -s  "$FUNC_FILE"  ]]; then
       source "$FUNC_FILE"
       "$ACTION" "$@"
       exit 0
     fi
 
-    BIN_FILE="$THIS_DIR/bin/lib/${ACTION}.sh"
-    if [[ -s "$BIN_FILE" ]]; then
-      source "$BIN_FILE"
-      "$ACTION" "$@"
+    local +x SHELL_SCRIPT="$THIS_DIR/sh/${ACTION}"/_
+    if [[ -s  "$SHELL_SCRIPT"  ]]; then
+      source "$SHELL_SCRIPT"
       exit 0
     fi
 
-    # === It's an error:
-    echo "!!! Unknown action: $ACTION" 1>&2
-    exit 1
+    source "$THIS_DIR/bin/public/my_nhk/_.sh"
+    my_nhk "$ACTION" "$@"
+    exit 0
     ;;
 
 esac

@@ -1,0 +1,16 @@
+#!/usr/bin/env mksh
+#
+# === {{CMD}}
+#
+set -u -e -o pipefail
+
+local +x PATH="$PATH:$THIS_DIR/../my_os/bin"
+
+cd "$THIS_DIR"
+
+local +x IFS=$'\n'
+
+my_os package --install livestreamer
+
+
+
