@@ -12,9 +12,10 @@ case "$(echo $@)" in
     local +x FILES_FOUND=""
     local +x AGE="5"
     find "tmp/schedules" "tmp/skips" -type f -mtime +"${AGE}" -print | while read -r FILE ; do
-      echo "$(stat -c "%y:" $FILE) $FILE"
-      rm "$FILE" || :
+      local +x INFO="$(stat -c "%y:" $FILE) $FILE"
+      rm "$FILE" || continue
       FILES_FOUND="yes"
+      echo "$INFO"
     done | sort -r
     if [[ -z "$FILES_FOUND" ]]; then
       echo "=== No files found older than $AGE days." >&2
