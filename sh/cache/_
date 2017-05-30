@@ -1,0 +1,29 @@
+#!/usr/bin/env mksh
+#
+# === {{CMD}}
+#
+set -u -e -o pipefail
+
+PATH="$PATH:$THIS_DIR/../my_fs/bin"
+cd "$THIS_DIR"
+
+case "$(echo $@)" in
+  --clear)
+    local +x FILES_FOUND=""
+    local +x AGE="5"
+    find "tmp/schedules" "tmp/skips" -type f -mtime +"${AGE}" -print | while read -r FILE ; do
+      echo "$(stat -c "%y:" $FILE) $FILE"
+      rm "$FILE" || :
+      FILES_FOUND="yes"
+    done | sort -r
+    if [[ -z "$FILES_FOUND" ]]; then
+      echo "=== No files found older than $AGE days." >&2
+    fi
+    ;;
+
+  *)
+    echo "!!! Unknown options: $@" >&2
+    exit 2
+    ;;
+
+esac

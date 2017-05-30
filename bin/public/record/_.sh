@@ -2,6 +2,7 @@
 # === {{CMD}}  ID
 # === {{CMD}}  --silent ID
 record () {
+  my_nhk cache --clear || :
   local +x IS_SILENT=""
   if [[ "$@" == *"silent"* ]]; then
     local +x IS_SILENT="--silent"
