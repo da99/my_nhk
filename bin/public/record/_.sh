@@ -23,6 +23,13 @@ record () {
   set $INFO
   local +x STARTS="$1"
   local +x SECS="$2"
+
+  # === For some reason video cuts off if time is 10 mins,
+  # === so compensate by adding an extra 10 seconds:
+  if [[ "$SECS" -lt "$(( (60 * 15) + 5 ))" ]]; then
+    SECS="$(( SECS + 10 ))"
+  fi
+
   local +x SHOW_TITLE="$3"
   local +x FILE="/tmp/nhk.$3.mp4"
   local +x FILE_TMP="${FILE}.tmp"
