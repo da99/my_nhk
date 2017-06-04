@@ -25,9 +25,9 @@ record () {
   local +x SECS="$2"
 
   # === For some reason video cuts off if time is 10 mins,
-  # === so compensate by adding an extra 10 seconds:
-  if [[ "$SECS" -lt "$(( (60 * 15) + 5 ))" ]]; then
-    SECS="$(( SECS + 10 ))"
+  # === so compensate by adding an extra 60 seconds:
+  if [[ "$SECS" -lt "$(( (60 * 15) + 10 ))" ]]; then
+    SECS="$(( SECS + 60 ))"
   fi
 
   local +x SHOW_TITLE="$3"
@@ -47,7 +47,7 @@ record () {
     echo "!!! Show is not in the future: $SHOW_TITLE" >&2
     exit 2
   fi
-  echo "=== $(date +"%I:%M:%S %p"): Waiting to record: $SHOW_TITLE" >&2
+  echo "=== $(date +"%I:%M:%S %p"): Waiting to record: $SHOW_TITLE ($SECS seconds)" >&2
   sleep "$WAIT_TIME"
 
   if my_nhk is-skip "$NUM" ; then
