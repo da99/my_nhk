@@ -1,0 +1,10 @@
+#!/usr/bin/env mksh
+#
+# === {{CMD}}
+#
+set -u -e -o pipefail
+
+# From: http://www.commandlinefu.com/commands/view/3584/remove-color-codes-special-characters-with-sed
+my_nhk titles | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"
+
+
