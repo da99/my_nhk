@@ -107,16 +107,7 @@ def download_schedule():
 the_action = sys.argv[1].strip()
 
 
-if the_action == "schedule-is-fresh":
-    the_list = get_nhk()
-    first = the_list[0]
-    second = the_list[1]
-    if is_running(first) and is_in_future(second):
-        sys.exit(0)
-    else:
-        sys.exit(1)
-
-elif the_action == "seconds-left":
+if the_action == "seconds-left":
     the_list = get_nhk()
     item = the_list[0]
     print str(ends_at(item) - epoch_time())

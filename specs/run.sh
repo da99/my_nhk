@@ -22,10 +22,6 @@ run () {
   "$@" || failed
 }
 
-# run my_nhk schedule-download
-# run my_nhk schedule-from-cache
-run my_nhk schedule-is-fresh
-# run my_nhk schedule-refresh
 run my_nhk schedule
 run my_nhk titles
 run my_nhk title

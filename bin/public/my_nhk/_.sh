@@ -8,16 +8,14 @@
 # === {{BIN}}  next    [Search String]
 # === {{BIN}}  next-id Search String
 
+local +x PATH="$PATH:$THIS_DIR/../my_fs/bin"
 schedule-from-cache () {
-  ls -1 tmp/schedules | sort -r | head -n1 | {
+  ls -1 tmp/schedules | sort | tail -n1 | {
     read -r LINE
     realpath "$THIS_DIR/tmp/schedules/$LINE"
   }
 }
 
-schedule-is-fresh () {
-  "$THIS_DIR"/private/nhk.py "schedule-is-fresh" "$SCHEDULE"
-}
 
 schedule-download () {
   local +x NOW="$(date +"%Y-%m-%d-%H-%M-%S")"
@@ -32,6 +30,7 @@ schedule-download () {
 }
 
 my_nhk () {
+  unset -f my_nhk
   cd "$THIS_DIR"
 
   local +x SCHEDULE="$(schedule-from-cache)"
@@ -39,9 +38,10 @@ my_nhk () {
   case "$@" in
 
     "schedule")
-      if schedule-is-fresh ; then
+      if [[ ! -z "$SCHEDULE" ]] && my_fs is-younger-than $(( 60 * 10 )) "$SCHEDULE" ; then
         local +x FILE="$SCHEDULE"
       else
+        my_nhk cache --clear
         schedule-download
         local +x FILE="$(schedule-from-cache)"
       fi
