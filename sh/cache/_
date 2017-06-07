@@ -13,7 +13,7 @@ case "$(echo $@)" in
     local +x AGE="2"
     local +x IFS=$'\n'
 
-    local +x OLD_SCHED="$(find "tmp/schedules" -type f -iname '*.json'  -print)"
+    local +x OLD_SCHED="$(find "tmp/schedules" -type f -iname '*.json'  -print | sort | head -n-10)"
     if [[ ! -z "$OLD_SCHED" ]]; then
       for FILE in $(echo "$OLD_SCHED"); do
         echo "$(stat -c "%y" "$FILE"): $FILE"
