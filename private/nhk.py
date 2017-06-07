@@ -45,7 +45,7 @@ def get_json(f):
     return json.loads(txt)
 
 def get_full(meta):
-    return '{{' + get_title(meta) + "}} \n" + get_duration(meta)  + ", ID: " + get_id(meta) + "\n" + get_desc(meta)
+    return get_title(meta) + " \n" + get_duration(meta)  + ", ID: " + get_id(meta) + "\n" + get_desc(meta)
 
 def starts_at(meta):
     return int(meta["pubDate"])/1000
@@ -70,7 +70,7 @@ def get_dur(meta):
     return duration
 
 def get_duration(meta):
-    return str(get_dur(meta)) + " mins., starts in {{" + str(get_starts_at_mins(meta)) + "}} mins."
+    return str(get_dur(meta)) + " mins., starts in " + str(get_starts_at_mins(meta)) + " mins."
 
 def get_desc(meta):
     return meta["description"].strip()

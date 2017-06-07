@@ -99,7 +99,7 @@ my_nhk () {
     *)
       mkdir -p tmp
       my_nhk schedule > tmp/nhk.json
-      "$THIS_DIR"/private/nhk.py "$@" "$(my_nhk schedule)" | sh_color BOLD
+      "$THIS_DIR"/private/nhk.py "$@" "$(my_nhk schedule)"
       ;;
   esac
 } # === end function
