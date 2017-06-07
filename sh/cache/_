@@ -13,15 +13,23 @@ case "$(echo $@)" in
     local +x AGE="2"
     local +x IFS=$'\n'
 
-    for FILE in $(find "tmp/schedules" "tmp/skips" -type f -mtime +"${AGE}" -print ) ; do
-      local +x INFO="$(stat -c "%y:" $FILE) $FILE"
+    local +x OLD_SCHED="$(find "tmp/schedules" -type f -iname '*.json'  -print)"
+    if [[ ! -z "$OLD_SCHED" ]]; then
+      for FILE in $(echo "$OLD_SCHED"); do
+        echo "$(stat -c "%y" "$FILE"): $FILE"
+        rm "$FILE"
+      done
+    fi
+
+    for FILE in $(find "tmp/skips" -type f -mtime +"${AGE}" -print ) ; do
+      local +x INFO="$(stat -c "%y" $FILE): $FILE"
       if rm "$FILE" ; then
         FILES_FOUND="yes"
         echo "$INFO"
       fi
     done
 
-    if [[ -z "$FILES_FOUND" ]]; then
+    if [[ -z "$FILES_FOUND" && -z "$OLD_SCHED" ]]; then
       echo "=== No files found older than $AGE days." >&2
     fi
     ;;
