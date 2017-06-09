@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os, sys, re, json, urllib2, gzip, StringIO;
 import time
@@ -129,7 +130,12 @@ elif the_action == "title":
 elif the_action == "titles":
   the_list = get_nhk()
   for i, val in enumerate(the_list):
-      print get_id(val) + ": " + get_title(val) + " ("  + get_duration(val) + ")"
+      print u''.join((get_id(val) , ": " , get_title(val) , " ("  , get_duration(val) + ")")).encode('utf-8').strip()
+
+elif the_action == "subtitles":
+  the_list = get_nhk()
+  for i, val in enumerate(the_list):
+      print u''.join((get_id(val) , ": " , (val["subtitle"] or ""))).encode('utf-8').strip()
 
 elif the_action == "all":
     the_list = get_nhk()
