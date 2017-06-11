@@ -128,7 +128,7 @@ the_action = sys.argv[1].strip()
 
 if the_action == "seconds-left":
     the_list = get_nhk()
-    item = the_list[0]
+    item = get_current(the_list)
     print str(ends_at(item) - epoch_time())
 
 elif the_action == "schedule-download":
@@ -163,7 +163,7 @@ elif the_action == "all":
 
 elif the_action == "meta":
     the_list = get_nhk()
-    v = the_list[0]
+    v = get_current(the_list)
     keys = v.keys()
     keys.sort()
     for i, k in enumerate(keys):
@@ -171,12 +171,12 @@ elif the_action == "meta":
 
 elif the_action == "key":
     the_list = get_nhk()
-    v = the_list[0]
+    v = get_current(the_list)
     print v[sys.argv[2].strip()]
 
 elif the_action == "keys":
     the_list = get_nhk()
-    keys = the_list[0].keys()
+    keys = get_current(the_list).keys()
     keys.sort()
     print ", ".join(keys)
 
@@ -187,16 +187,11 @@ elif the_action == "desc":
 
 elif the_action == "current":
     the_list = get_nhk()
-    print get_full(the_list[0])
+    print get_full(get_current(the_list))
 
 elif the_action == "next":
     the_list = get_nhk()
-    right_now = epoch_time()
-    for i, item in enumerate(the_list):
-        last_item = None
-        if (starts_at(item) > right_now):
-            print get_full(item)
-            break
+    print get_full(get_next(the_list))
 
 elif the_action == "nexts":
     the_list = get_nhk()
