@@ -1,0 +1,8 @@
+#!/usr/bin/env mksh
+#
+#
+
+mkdir -p        /var/log/nhk-record
+chown da:da -R  /var/log/nhk-record
+exec chpst -u da svlogd -tt /var/log/nhk-record
+

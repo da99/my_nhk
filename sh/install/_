@@ -5,6 +5,7 @@
 set -u -e -o pipefail
 
 local +x PATH="$PATH:$THIS_DIR/../my_os/bin"
+local +x PATH="$PATH:$THIS_DIR/../my_fs/bin"
 
 cd "$THIS_DIR"
 
@@ -12,5 +13,13 @@ local +x IFS=$'\n'
 
 my_os package --install livestreamer
 
+case "$(my_os name)" in
+  "rolling_void")
+    echo "=== Installing services:"
+    my_fs link "$PWD"/runit/high    /var/service/nhk-high
+    my_fs link "$PWD"/runit/low     /var/service/nhk-low
+    my_fs link "$PWD"/runit/record  /var/service/nhk-record
+    ;;
+esac
 
 

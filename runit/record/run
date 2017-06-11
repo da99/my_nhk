@@ -1,0 +1,7 @@
+#!/usr/bin/mksh
+#
+#
+
+exec 2>&1
+cd "$(realpath "$(dirname "$0")/../..")"
+exec chpst -u da scripts/stream high 2110

@@ -37,6 +37,24 @@ def get_list(f):
     the_list = get_json(f)
     return the_list["channel"]["item"]
 
+def get_current(the_list):
+    right_now = epoch_time()
+    last_item = None;
+    for i, item in enumerate(the_list):
+        last_item = item
+        if (ends_at(item) > right_now):
+            return item
+    return last_item
+
+def get_next(the_list):
+    right_now = epoch_time()
+    last_item = None;
+    for i, item in enumerate(the_list):
+        last_item = item
+        if (starts_at(item) > right_now):
+            return item
+    return last_item
+
 def get_starts_at_mins(meta):
     return ((get_pub_epoch(meta) - epoch_time())/60)
 
@@ -61,8 +79,8 @@ def is_in_future(meta):
     return(starts_at > epoch_time())
 
 def get_dur_secs(meta):
-    begins = starts_at(meta)
-    ends   = ends_at(meta)
+    begins   = starts_at(meta)
+    ends     = ends_at(meta)
     duration = (ends - begins)
     return duration
 
@@ -80,7 +98,7 @@ def get_plain_title(meta):
     return meta["title"].strip()
 
 def get_title(meta):
-    title = get_plain_title(meta)
+    title    = get_plain_title(meta)
     subtitle = (meta["subtitle"] or "").strip()
     if meta["subtitle"] == "":
         return title
@@ -121,9 +139,9 @@ elif the_action == "title":
   the_list = get_nhk()
   the_id = sys.argv[2].strip()
   if the_id == "title" or re.search(".json", the_id):
-      print get_plain_title(the_list[0])
+      print get_plain_title(get_current(the_list))
   elif the_id == "next":
-      print get_plain_title(the_list[1])
+      print get_plain_title(get_next(the_list))
   else:
       print get_by_id(the_list, the_id)["title"]
 
@@ -173,7 +191,12 @@ elif the_action == "current":
 
 elif the_action == "next":
     the_list = get_nhk()
-    print get_full(the_list[1])
+    right_now = epoch_time()
+    for i, item in enumerate(the_list):
+        last_item = None
+        if (starts_at(item) > right_now):
+            print get_full(item)
+            break
 
 elif the_action == "nexts":
     the_list = get_nhk()

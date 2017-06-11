@@ -1,0 +1,8 @@
+#!/usr/bin/env mksh
+#
+#
+
+mkdir -p        /var/log/nhk-low
+chown da:da -R  /var/log/nhk-low
+exec chpst -u da svlogd -tt /var/log/nhk-low
+

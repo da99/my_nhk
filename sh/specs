@@ -1,0 +1,12 @@
+#!/usr/bin/env mksh
+#
+#
+set -u -e -o pipefail
+
+PATH="$PATH:$PWD/bin"
+my_nhk title
+my_nhk title next
+my_nhk titles
+my_nhk next
+my_nhk record-info $(my_nhk titles | cut -d':' -f1 | head -n1)
+

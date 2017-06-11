@@ -1,6 +1,7 @@
 
 # === {{CMD}}  ID
 # === {{CMD}}  --silent ID
+# === Waits until show starts, checks skip record, then starts recording.
 record () {
   my_nhk cache --clear || :
   local +x IS_SILENT=""
