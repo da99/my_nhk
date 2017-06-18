@@ -8,6 +8,8 @@ pid=$$
 
 while kill -0 $pid &>/dev/null ; do
   my_nhk record-next || :
+
+  # Some shows are 5 or 10 minutes long, so best to set this to 1 min
   sleep 60
 done
 

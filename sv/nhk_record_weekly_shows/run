@@ -1,7 +1,0 @@
-#!/usr/bin/mksh
-#
-#
-
-set -u -e -o pipefail
-PATH="$PATH:/apps/my_nhk/bin"
-my_nhk record-next "Rising|Technology|Supernova|Cherry|Amazing Animals|Biz Lab|Insight|HOKUSAI|SOMEWHERE|COOL JAPAN|UKIYO-E|Doki|Document|Documentary|Buzz|Focus|Melo|Newsroom|Close-up|Inside"

@@ -1,3 +1,5 @@
 /progs/
 /tmp/
 /sv/*/supervise
+/runit/*/supervise
+/runit/*/log/supervise
