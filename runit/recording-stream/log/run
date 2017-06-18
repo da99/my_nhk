@@ -1,0 +1,8 @@
+#!/usr/bin/env mksh
+#
+#
+
+mkdir -p        /var/log/nhk-recording-stream
+chown da:da -R  /var/log/nhk-recording-stream
+exec chpst -u da svlogd -tt /var/log/nhk-recording-stream
+

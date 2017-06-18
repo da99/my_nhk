@@ -16,9 +16,10 @@ my_os package --install livestreamer
 case "$(my_os name)" in
   "rolling_void")
     echo "=== Installing services:"
-    my_fs link "$PWD"/runit/high    /var/service/nhk-high
-    my_fs link "$PWD"/runit/low     /var/service/nhk-low
-    my_fs link "$PWD"/runit/record  /var/service/nhk-record
+    my_fs link "$PWD"/runit/high                /var/service/nhk-high
+    my_fs link "$PWD"/runit/low                 /var/service/nhk-low
+    my_fs link "$PWD"/runit/recording-stream    /var/service/nhk-recording-stream
+    my_fs link "$PWD"/runit/record-weekly-shows /var/service/record-weekly-shows
     ;;
 esac
 

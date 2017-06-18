@@ -76,7 +76,7 @@ def get_pub_epoch(meta):
     return int(meta["pubDate"])/1000
 
 def is_in_future(meta):
-    return(starts_at > epoch_time())
+    return(starts_at(meta) > epoch_time())
 
 def get_dur_secs(meta):
     begins   = starts_at(meta)

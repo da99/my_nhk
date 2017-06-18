@@ -1,0 +1,8 @@
+#!/usr/bin/env mksh
+#
+#
+
+mkdir -p        /var/log/nhk-record-weekly-shows
+chown da:da -R  /var/log/nhk-record-weekly-shows
+exec chpst -u da svlogd -tt /var/log/nhk-record-weekly-shows
+

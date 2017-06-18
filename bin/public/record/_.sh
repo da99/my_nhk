@@ -45,7 +45,7 @@ record () {
   fi
 
   if [[ "$WAIT_TIME" -lt 1 ]]; then
-    echo "!!! Show is not in the future: $SHOW_TITLE" >&2
+    echo "!!! Show is not in the future: $(date): $SHOW_TITLE" >&2
     exit 2
   fi
   echo "=== $(date +"%I:%M:%S %p"): Waiting to record: $SHOW_TITLE ($SECS seconds)" >&2

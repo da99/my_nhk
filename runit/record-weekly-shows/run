@@ -1,0 +1,9 @@
+#!/usr/bin/env mksh
+#
+#
+set -u -e -o pipefail
+
+exec 2>&1
+cd "$(realpath "$(dirname "$0")/../..")"
+exec chpst -u da scripts/record-weekly-shows
+
