@@ -1,5 +1,6 @@
 #!/usr/bin/mksh
 #
+# This sets up the stream reserved for recording.
 #
 
 exec 2>&1
