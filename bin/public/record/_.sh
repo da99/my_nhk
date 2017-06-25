@@ -29,6 +29,8 @@ record () {
   # === so compensate by adding an extra 120 seconds:
   if [[ "$SECS" -lt "$(( (60 * 20) + 10 ))" ]]; then
     SECS="$(( SECS + 120 ))"
+  else
+    SECS="$(( SECS + 60 ))"
   fi
 
   local +x SHOW_TITLE="$3"
