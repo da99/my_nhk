@@ -4,7 +4,7 @@
 record-next () {
   if [[ -z "$@" ]]; then
     if lynx --dump "http://whatismyipaddress.com/" | grep "Comcast Cable" ; then
-      local +x PATTERN="Kuala|Somewhere|Rising|Technology|Cherry|Biz Lab|Insight|HOKUSAI|COOL JAPAN|Document|Documentary|Buzz|Focus|Close-up|Inside"
+      local +x PATTERN="Kuala|Somewhere|Rising|Technology|Cherry|Biz Lab|Insight|HOKUSAI|COOL JAPAN|Document|Documentary|Buzz|Focus|Close-up|Inside|MELO"
     else
       local +x PATTERN="#TOKYO|Kuala|Somewhere|Rising|Technology|Supernova|Cherry|Amazing Animals|Biz Lab|Insight|HOKUSAI|SOMEWHERE|COOL JAPAN|UKIYO-E|Doki|Document|Documentary|Buzz|Focus|Melo|Close-up|Inside"
     fi
