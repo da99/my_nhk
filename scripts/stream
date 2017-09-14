@@ -1,6 +1,6 @@
 #!/usr/bin/mksh
 
-local +x LIVESTREAMER=/usr/bin/livestreamer
+local +x media_app=/usr/bin/streamlink
 local +x CURL=/usr/bin/curl
 
 if [[ -z "$@" ]]; then
@@ -15,8 +15,8 @@ else
   PORT="$1"; shift
 fi
 
-if [[ ! -e "$LIVESTREAMER" ]]; then
-  echo "--- Not found: $LIVESTREAMER"
+if [[ ! -e "$media_app" ]]; then
+  echo "--- Not found: $(basename $media_app)"
   exit 1
 fi
 
@@ -36,7 +36,7 @@ fi
 
 # File from:
 # http://www3.nhk.or.jp/nhkworld/app/tv/hlslive_tv.xml
-exec /usr/bin/livestreamer       \
+exec $media_app       \
   --http-no-ssl-verify           \
   --player-external-http          \
   --player-external-http-port $PORT \

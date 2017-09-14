@@ -114,7 +114,7 @@ verbose-record () {
   set $INFO
   local +x STARTS="$1"
   local +x SECS="$2"
-  local +x FILE="/tmp/nhk.$3.raw"
+  local +x FILE="/play/nhk/nhk.$3.raw"
   local +x A_ID="$4"
   local +x NOW="$(date +"%s")"
   local +x WAIT_TIME="$(($STARTS - $NOW))"

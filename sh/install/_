@@ -11,7 +11,7 @@ cd "$THIS_DIR"
 
 local +x IFS=$'\n'
 
-my_os package --install livestreamer
+my_os package --install streamlink
 
 case "$(my_os name)" in
   "rolling_void")
