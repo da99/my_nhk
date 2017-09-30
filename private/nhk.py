@@ -106,7 +106,7 @@ def get_title(meta):
         return title + " : " + subtitle
 
 def download_schedule():
-    resp = urllib2.urlopen("http://api.nhk.or.jp/nhkworld/epg/v6/world/now.json?apikey=EJfK8jdS57GqlupFgAfAAwr573q01y6k");
+    resp = urllib2.urlopen("https://api.nhk.or.jp/nhkworld/epg/v7/world/now.json?apikey=EJfK8jdS57GqlupFgAfAAwr573q01y6k");
 
     raw  = resp.read().strip()
       # Sometimes newlines are randomly included in the raw JSON output.
