@@ -2,7 +2,7 @@
 # === {{CMD}}  Search String
 
 record-next () {
-  local +x COMMON="Hokusai|TOKYO EYE 2020|DOMO|COOL|Regional"
+  local +x COMMON="Shoot|Hokusai|TOKYO EYE 2020|DOMO|COOL|Regional"
   if [[ -z "$@" ]]; then
     if lynx --dump "http://whatismyipaddress.com/" | grep "Comcast Cable" ; then
       local +x PATTERN="$COMMON|Kuala|Rising|Technology|Cherry|Biz Lab|Insight|HOKUSAI|COOL JAPAN|Document|Documentary|Buzz|Focus|Close-up|Inside|MELO"

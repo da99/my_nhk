@@ -26,9 +26,9 @@ record () {
   local +x SECS="$2"
 
   # === For some reason video cuts off if time is <20 mins,
-  # === so compensate by adding an extra 120 seconds:
+  # === so compensate by adding an extra 150 seconds:
   if [[ "$SECS" -lt "$(( (60 * 20) + 10 ))" ]]; then
-    SECS="$(( SECS + 120 ))"
+    SECS="$(( SECS + 150 ))"
   else
     SECS="$(( SECS + 60 ))"
   fi
