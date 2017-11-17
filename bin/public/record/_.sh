@@ -35,13 +35,14 @@ record () {
 
   local +x SHOW_TITLE="$3"
   local +x FILE="/play/nhk/nhk.$3.mp4"
+  local +x UNIQ_NAME="$(basename "$FILE")"
   local +x FILE_TMP="${FILE}.tmp"
   local +x A_ID="$4"
   local +x NOW="$(date +"%s")"
   local +x WAIT_TIME="$(($STARTS - $NOW))"
   local +x MINS="$(( WAIT_TIME / 60))"
 
-  if [[ -e "$FILE" ]]; then
+  if [[ -e "$FILE" ]] || grep "$UNIQ_NAME" /play/nhk/list.txt ; then
     echo "=== Already exists: $FILE" >&2
     exit 4
   fi
@@ -73,5 +74,6 @@ record () {
   }
 
   mv -f "$FILE_TMP" "$FILE"
+  echo "$UNIQ_NAME" >> /play/nhk/list.txt
   my_nhk skip "$A_ID"
 } # === end function
