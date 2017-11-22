@@ -197,7 +197,7 @@ elif the_action == "nexts":
     the_list = get_nhk()
     for i, show in enumerate(the_list):
         if is_in_future(show):
-            print get_id(show) + " " + get_plain_title(show)
+            print get_id(show) + " " + get_plain_title(show) + " " + get_desc(show)
 
 elif the_action == "record-info":
     the_list = get_nhk()
