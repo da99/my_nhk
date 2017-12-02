@@ -2,7 +2,7 @@
 # === {{CMD}}  Search String
 
 record-next () {
-  local +x COMMON="COOL|mini"
+  local +x COMMON="COOL|JAPANOLOGY mini"
   if [[ -z "$@" ]]; then
     # if lynx --dump "http://whatismyipaddress.com/" | grep "Comcast Cable" ; then
       local +x PATTERN="$COMMON|Jakarta|Indo|Kuala|Technology|COOL JAPAN|Documentary|MELO"
