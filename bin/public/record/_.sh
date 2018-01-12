@@ -33,7 +33,7 @@ record () {
     SECS="$(( SECS + 200 ))"
   else
     STARTS="$(( STARTS + 10 ))"
-    SECS="$(( SECS + 60 ))"
+    SECS="$(( SECS + 200 ))"
   fi
 
   local +x SHOW_TITLE="$3"
