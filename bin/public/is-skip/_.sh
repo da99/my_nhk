@@ -3,22 +3,13 @@
 is-skip () {
   cd "$THIS_DIR"
   local +x ID="$1"; shift
-  local +x FILE="tmp/skips/$ID"
+  local +x LIST="/play/nhk/list.txt"
+  local +x FILENAME="$(my_nhk record-info $ID | cut -d' ' -f3)"
 
-  if [[ ! -f "$FILE" ]]; then
-    exit 1
+  if [[ ! -z "$FILENAME" ]] ; then
+    if grep "$FILENAME" "$LIST" >/dev/null ; then
+      exit 0
+    fi
   fi
-
-  local +x MAX_SECS=$((60 * 60 * 24))
-  local +x NOW="$(date +"%s")"
-  local +x THEN="$(stat -c %Y "$FILE")"
-  local +x AGE="$(( NOW - THEN ))"
-
-  if [[ "$AGE" -gt "$MAX_SECS" ]]; then
-    rm -f "$FILE"
-  fi
-
-  if [[ ! -f "$FILE" ]]; then
-    exit 1
-  fi
+  exit 1
 } # === end function
