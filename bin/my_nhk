@@ -9,6 +9,8 @@ fi
 set -u -e -o pipefail
 THE_ARGS="$@"
 THIS_DIR="$(dirname "$(dirname "$(realpath "$0")")")"
+PATH="$PATH:$THIS_DIR/../my_media/bin"
+PATH="$PATH:$THIS_DIR/../my_zsh/bin"
 PATH="$PATH:$THIS_DIR/../mksh_setup/bin"
 PATH="$PATH:$THIS_DIR/../sh_color/bin"
 PATH="$PATH:$THIS_DIR/bin"
@@ -16,12 +18,10 @@ PATH="$PATH:$THIS_DIR/bin"
 case $ACTION in
 
   help|--help|-h)
-    PATH="$PATH:$THIS_DIR/../mksh_setup/bin"
-    mksh_setup print-help $0 "$@"
+    my_zsh print-help $0 "$@"
     ;;
 
   *)
-
     mkdir -p "$THIS_DIR/tmp/schedules"
     mkdir -p "$THIS_DIR/tmp/skips"
 
