@@ -9,57 +9,19 @@
 # === {{BIN}}  next-id Search String
 
 local +x PATH="$PATH:$THIS_DIR/../my_fs/bin"
-schedule-from-cache () {
-  ls -1 tmp/schedules | sort | tail -n1 | {
-    read -r LINE
-    realpath "$THIS_DIR/tmp/schedules/$LINE"
-  }
-}
-
-
-schedule-download () {
-  local +x NOW="$(date +"%Y-%m-%d-%H-%M-%S")"
-  local +x NEW_FILE="tmp/schedules/${NOW}.json"
-  local +x TMP_FILE="tmp/schedule.${NOW}.json.tmp"
-  "$THIS_DIR"/private/nhk.py "schedule-download" > "$TMP_FILE" || {
-    rm -f "$TMP_FILE"
-  }
-  if [[ -f "$TMP_FILE" ]]; then
-    mv "$TMP_FILE" "$NEW_FILE"
-  fi
-}
 
 my_nhk () {
   unset -f my_nhk
   cd "$THIS_DIR"
 
-  local +x SCHEDULE="$(schedule-from-cache)"
-
   case "$@" in
-
-    "schedule")
-      if [[ ! -z "$SCHEDULE" ]] && my_fs is-younger-than $(( 60 * 10 )) "$SCHEDULE" ; then
-        local +x FILE="$SCHEDULE"
-      else
-        my_nhk cache --clear
-        schedule-download
-        local +x FILE="$(schedule-from-cache)"
-      fi
-
-      if [[ -z "$FILE" ]]; then
-        echo "!!! Could not retrieve schedule after repeated attempts" >&2
-        exit 5
-      fi
-
-      echo "$FILE"
-      ;;
 
     choose|choose" "*)
       unset -f my_nhk
       shift
-      my_nhk titles | fzy | head -n 1 | cut -d':' -f1 | {
+      my_media nhk list | fzy | head -n 1 | cut -d':' -f1 | {
         read -r ID
-        my_nhk desc "$ID"
+        my_media nhk info "$ID"
         case "$@" in
           record)
             verbose-record "$ID"
@@ -80,7 +42,7 @@ my_nhk () {
       unset -f my_nhk
       shift
       local +x TARGET="$@"
-      local +x FOUND="$(my_media nhk meta-record | grep -i -P "$TARGET" | head -n1 | cut -d' ' -f1 || :)"
+      local +x FOUND="$(my_media nhk meta-record list | grep -i -P "$TARGET" | head -n1 | cut -d' ' -f1 || :)"
       if [[ -z "$FOUND" ]]; then
         exit 1
       fi
@@ -92,21 +54,25 @@ my_nhk () {
       shift
       my_nhk next-id "$@" | {
         read -r ID
-        my_nhk desc $ID
+        my_media nhk info $ID
       }
+      ;;
+
+    "meta-record "*)
+      my_media nhk $@
       ;;
 
     *)
       mkdir -p tmp
-      my_nhk schedule > tmp/nhk.json
-      "$THIS_DIR"/private/nhk.py "$@" "$(my_nhk schedule)"
+      echo "!!! Unknown args: $@" >&2
+      exit 1
       ;;
   esac
 } # === end function
 
 verbose-record () {
   local +x NUM="$1"; shift
-  local +x INFO="$(my_nhk record-info $NUM)"
+  local +x INFO="$(my_nhk meta-record $NUM)"
   if [[ -z "$INFO" ]]; then
     exit 2
   fi
@@ -131,3 +97,4 @@ verbose-record () {
   done
   echo -e "\r                                 "
 } # === choose-record
+

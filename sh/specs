@@ -4,13 +4,12 @@
 set -u -e -o pipefail
 
 PATH="$PATH:$PWD/bin"
-my_nhk current
-my_nhk title
-my_nhk title next
-my_nhk titles
-my_nhk next
-my_nhk record-info $(my_nhk titles | cut -d':' -f1 | head -n1)
+my_media current
+my_media title
+my_media title next
+my_media next
+my_media meta-record $(my_media titles | cut -d':' -f1 | head -n1)
 
-my_nhk seconds-left
-my_nhk meta
-my_nhk keys
+my_media seconds-left
+my_media meta
+my_media keys

@@ -3,7 +3,6 @@
 # === {{CMD}}  --silent ID
 # === Waits until show starts, checks skip record, then starts recording.
 record () {
-  my_nhk cache --clear || :
   local +x IS_SILENT=""
   if [[ "$@" == *"silent"* ]]; then
     local +x IS_SILENT="--silent"
@@ -16,7 +15,7 @@ record () {
     exit 0
   fi
 
-  local +x INFO="$(my_nhk record-info $NUM || :)"
+  local +x INFO="$(my_nhk meta-record $NUM || :)"
   if [[ -z "$INFO" ]]; then
     exit 2
   fi
