@@ -77,5 +77,5 @@ record () {
 
   mv -f "$FILE_TMP" "$FILE"
   echo "$UNIQ_NAME" >> /play/nhk/list.txt
-  my_nhk skip "$A_ID"
+  # my_nhk skip "$A_ID"
 } # === end function
