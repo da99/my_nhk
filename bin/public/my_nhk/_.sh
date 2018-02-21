@@ -4,7 +4,6 @@
 # === {{BIN}}  choose  desc|record-info|record
 # === {{BIN}}  desc        ID
 # === {{BIN}}  record-info ID # Prints: START SECONDS  UNIQ_ID
-# === {{BIN}}  current
 # === {{BIN}}  next    [Search String]
 # === {{BIN}}  next-id Search String
 
