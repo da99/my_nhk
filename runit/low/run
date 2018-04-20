@@ -4,4 +4,4 @@
 
 exec 2>&1
 cd "$(realpath "$(dirname "$0")/../..")"
-exec chpst -u da scripts/stream low 2111
+exec chpst -u da -U da scripts/stream low 2111

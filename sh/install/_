@@ -19,7 +19,7 @@ case "$(my_os name)" in
     my_fs link "$PWD"/runit/high                /var/service/nhk-high
     my_fs link "$PWD"/runit/low                 /var/service/nhk-low
     my_fs link "$PWD"/runit/recording-stream    /var/service/nhk-recording-stream
-    my_fs link "$PWD"/runit/record-weekly-shows /var/service/record-weekly-shows
+    my_fs link "$PWD"/runit/record-weekly-shows /var/service/nhk-record-weekly-shows
     ;;
 esac
 
