@@ -7,7 +7,7 @@
 # === {{BIN}}  next    [Search String]
 # === {{BIN}}  next-id Search String
 
-local +x PATH="$PATH:$THIS_DIR/../my_fs/bin"
+PATH="$PATH:$THIS_DIR/../my_fs/bin"
 
 my_nhk () {
   unset -f my_nhk

@@ -4,8 +4,8 @@
 #
 set -u -e -o pipefail
 
-local +x PATH="$PATH:$THIS_DIR/../my_os/bin"
-local +x PATH="$PATH:$THIS_DIR/../my_fs/bin"
+PATH="$PATH:$THIS_DIR/../my_os/bin"
+PATH="$PATH:$THIS_DIR/../my_fs/bin"
 
 cd "$THIS_DIR"
 
